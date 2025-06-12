@@ -133,3 +133,13 @@ ax2.set_xlabel("Year")
 ax2.set_title("Cash Flow Forecast")
 ax2.legend()
 st.pyplot(fig2)
+
+
+# --- Footer ---
+st.markdown("---")
+st.markdown(
+    "<div style='text-align: center; font-size: 0.9em; color: gray;'>"
+    "Built by <a href='https://www.linkedin.com/in/timphamtx' target='_blank'>Tim Pham</a>"
+    "</div>",
+    unsafe_allow_html=True
+)
