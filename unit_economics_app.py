@@ -87,3 +87,49 @@ ax.set_title("Key Unit Economics")
 st.pyplot(fig)
 
 st.caption("Use the scenario selector and inputs to test your business model’s efficiency.")
+
+
+# --- Multi-Year Cash Flow Modeling ---
+st.subheader("📆 Multi-Year Cash Flow Forecast")
+
+years = [1, 2, 3, 4, 5]
+growth_rate = st.slider("Annual New Customer Growth Rate (%)", 0, 100, 20) / 100
+
+# Starting base
+customers_by_year = [new_customers]
+for i in range(1, len(years)):
+    customers_by_year.append(customers_by_year[-1] * (1 + growth_rate))
+
+revenues = [ARPU * 12 * c for c in customers_by_year]
+gross_profits = [rev * gross_margin_pct for rev in revenues]
+cac_spend = [c * CAC for c in customers_by_year]
+net_cash_flow = [gp - cac for gp, cac in zip(gross_profits, cac_spend)]
+
+# Create DataFrame
+forecast_df = pd.DataFrame({
+    "Year": years,
+    "New Customers": [int(c) for c in customers_by_year],
+    "Revenue ($)": revenues,
+    "Gross Profit ($)": gross_profits,
+    "CAC Spend ($)": cac_spend,
+    "Net Cash Flow ($)": net_cash_flow
+})
+
+st.dataframe(forecast_df.style.format({
+    "Revenue ($)": "${:,.0f}",
+    "Gross Profit ($)": "${:,.0f}",
+    "CAC Spend ($)": "${:,.0f}",
+    "Net Cash Flow ($)": "${:,.0f}"
+}))
+
+# Chart
+st.subheader("📈 Cash Flow Trend Over Time")
+fig2, ax2 = plt.subplots()
+ax2.plot(years, net_cash_flow, marker='o', label="Net Cash Flow")
+ax2.plot(years, revenues, linestyle='--', label="Revenue")
+ax2.plot(years, cac_spend, linestyle='--', label="CAC Spend")
+ax2.set_ylabel("Amount ($)")
+ax2.set_xlabel("Year")
+ax2.set_title("Cash Flow Forecast")
+ax2.legend()
+st.pyplot(fig2)
