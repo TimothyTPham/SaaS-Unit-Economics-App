@@ -37,12 +37,12 @@ defaults = {
     }
 }
 
-# Get scenario inputs
-ARPU = st.number_input("ARPU (Monthly Revenue per Customer)", min_value=0.0, value=defaults[scenario]["ARPU"])
-gross_margin_pct = st.slider("Gross Margin %", 0, 100, value=defaults[scenario]["Gross Margin %"]) / 100
-customer_lifetime = st.number_input("Customer Lifetime (months)", 1, 120, value=defaults[scenario]["Lifetime"])
-sales_spend = st.number_input("Sales & Marketing Spend ($)", 0.0, 1e6, value=defaults[scenario]["Spend"])
-new_customers = st.number_input("New Customers Acquired", 1, 100000, value=defaults[scenario]["Customers"])
+# Get scenario inputs (cast types to avoid StreamlitMixedNumericTypesError)
+ARPU = st.number_input("ARPU (Monthly Revenue per Customer)", min_value=0.0, value=float(defaults[scenario]["ARPU"]))
+gross_margin_pct = st.slider("Gross Margin %", 0, 100, value=int(defaults[scenario]["Gross Margin %"])) / 100
+customer_lifetime = st.number_input("Customer Lifetime (months)", min_value=1, value=int(defaults[scenario]["Lifetime"]))
+sales_spend = st.number_input("Sales & Marketing Spend ($)", min_value=0.0, value=float(defaults[scenario]["Spend"]))
+new_customers = st.number_input("New Customers Acquired", min_value=1, value=int(defaults[scenario]["Customers"]))
 
 # Calculations
 monthly_gm_per_cust = ARPU * gross_margin_pct
