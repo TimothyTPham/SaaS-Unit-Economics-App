@@ -5,7 +5,7 @@
 
 ---
 
-This tool calculates key SaaS unit economics based on user-defined assumptions. It includes:
+This tool calculates key SaaS unit economics based on user-defined assumptions. It includes: 
 
 - Customer Acquisition Cost (CAC)
 - Customer Lifetime Value (LTV)
